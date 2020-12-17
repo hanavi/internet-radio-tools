@@ -112,6 +112,16 @@ class Application(tk.Frame):
         if self.skipper:
             self.skipper.running = False
 
+    def update_status(self, status):
+
+        self.song_title_label.configure(text="Title: ")
+        self.song_title.configure(text=status['title'])
+        self.song_artist_label.configure(text="Artist: ")
+        self.song_artist.configure(text=status['artist'])
+        self.play_status.configure(text="Status")
+        self.play_status.configure(text=status['status'])
+
+
 def main():
     root = tk.Tk()
     root.geometry("700x500")

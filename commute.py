@@ -73,15 +73,32 @@ class CommercialSkipper(threading.Thread):
                 if not muted:
                     volume = self.device.status.volume_level
                     self.device.set_volume(0)
-                    self.main_window.play_status.configure(text="Muted")
+                    self.main_window.update_status({
+                        "title": "Advertisement",
+                        "artist": "None",
+                        "status": "Muted",
+                    })
                     muted = True
                 if delay > 1:
-                    self.main_window.song_title.configure(text="Advertisement")
-                    self.main_window.song_artist.configure(text="None")
+                    self.main_window.update_status({
+                        "title": "Advertisement",
+                        "artist": "None",
+                        "status": "Muted",
+                    })
             else:
                 if muted:
                     self.device.set_volume(volume)
-                    self.main_window.play_status.configure(text="Playing")
+                    artist = status.artist
+                    if len(title) > 35:
+                        title = title[:35] + "..."
+                    if len(artist) > 35:
+                        artist = artist[:35] + "..."
+                    # self.main_window.play_status.configure(text="Playing")
+                    self.main_window.update_status({
+                        "title": title,
+                        "artist": artist,
+                        "status": "Playing",
+                    })
                     muted = False
                 if delay > 1:
                     artist = status.artist
@@ -89,8 +106,11 @@ class CommercialSkipper(threading.Thread):
                         title = title[:35] + "..."
                     if len(artist) > 35:
                         artist = artist[:35] + "..."
-                    self.main_window.song_title.configure(text=title)
-                    self.main_window.song_artist.configure(text=artist)
+                    self.main_window.update_status({
+                        "title": title,
+                        "artist": artist,
+                        "status": "Playing",
+                    })
 
             sleep(delay)
 
