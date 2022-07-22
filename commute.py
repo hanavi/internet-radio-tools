@@ -11,8 +11,8 @@ import click
 import threading
 import tkinter as tk
 
-class CommercialSkipper(threading.Thread):
 
+class CommercialSkipper(threading.Thread):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
@@ -57,14 +57,14 @@ class CommercialSkipper(threading.Thread):
                 sleep(delay)
                 continue
 
-            status =  mc.status
+            status = mc.status
 
             time_remaining = status.duration - status.adjusted_current_time
 
             if time_remaining < 1:
-                delay = .1
+                delay = 0.1
             elif time_remaining < 5:
-                delay = .5
+                delay = 0.5
             else:
                 delay = default_delay
 
@@ -73,18 +73,22 @@ class CommercialSkipper(threading.Thread):
                 if not muted:
                     volume = self.device.status.volume_level
                     self.device.set_volume(0)
-                    self.main_window.update_status({
-                        "title": "Advertisement",
-                        "artist": "None",
-                        "status": "Muted",
-                    })
+                    self.main_window.update_status(
+                        {
+                            "title": "Advertisement",
+                            "artist": "None",
+                            "status": "Muted",
+                        }
+                    )
                     muted = True
                 if delay > 1:
-                    self.main_window.update_status({
-                        "title": "Advertisement",
-                        "artist": "None",
-                        "status": "Muted",
-                    })
+                    self.main_window.update_status(
+                        {
+                            "title": "Advertisement",
+                            "artist": "None",
+                            "status": "Muted",
+                        }
+                    )
             else:
                 if muted:
                     self.device.set_volume(volume)
@@ -94,11 +98,13 @@ class CommercialSkipper(threading.Thread):
                     if len(artist) > 35:
                         artist = artist[:35] + "..."
                     # self.main_window.play_status.configure(text="Playing")
-                    self.main_window.update_status({
-                        "title": title,
-                        "artist": artist,
-                        "status": "Playing",
-                    })
+                    self.main_window.update_status(
+                        {
+                            "title": title,
+                            "artist": artist,
+                            "status": "Playing",
+                        }
+                    )
                     muted = False
                 if delay > 1:
                     artist = status.artist
@@ -106,11 +112,12 @@ class CommercialSkipper(threading.Thread):
                         title = title[:35] + "..."
                     if len(artist) > 35:
                         artist = artist[:35] + "..."
-                    self.main_window.update_status({
-                        "title": title,
-                        "artist": artist,
-                        "status": "Playing",
-                    })
+                    self.main_window.update_status(
+                        {
+                            "title": title,
+                            "artist": artist,
+                            "status": "Playing",
+                        }
+                    )
 
             sleep(delay)
-
